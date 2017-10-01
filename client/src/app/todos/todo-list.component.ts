@@ -16,17 +16,15 @@ export class TodoListComponent implements OnInit {
     private todoAddSuccess : Boolean = false;
 
     public todoOwner : string;
-   // public todoStatus : boolean;
     public todoBody : string;
     public todoCategory : string;
 
     public newTodoOwner:string;
-  //  public newTodoStatus: boolean;
     public newTodoBody: string;
     public newTodoCategory: string;
 
 
-    //Inject the UserListService into this component.
+    //Inject the TodoListService into this component.
     //That's what happens in the following constructor.
     //
     //We can call upon the service for  interacting
@@ -40,16 +38,15 @@ export class TodoListComponent implements OnInit {
         //Here we clear all the fields, there's probably a better way
         //of doing this could be with forms or something else
         this.newTodoOwner = null;
-       // this.newUserAge = null;
         this.newTodoBody = null;
         this.newTodoCategory = null;
 
         this.todoListService.addNewTodo(owner, body, category).subscribe(
             succeeded => {
                 this.todoAddSuccess = succeeded;
-                // Once we added a new User, refresh our user list.
+                // Once we added a new todo, refresh our todo list.
                 // There is a more efficient method where we request for
-                // this new user from the server and add it to users, but
+                // this new todo from the server and add it to todos, but
                 // for this lab it's not necessary
                 this.refreshTodos();
             });
@@ -96,7 +93,7 @@ export class TodoListComponent implements OnInit {
      *
      */
     refreshTodos(): void {
-        //Get Users returns an Observable, basically a "promise" that
+        //Get Todos returns an Observable, basically a "promise" that
         //we will get the data from the server.
         //
         //Subscribe waits until the data is fully downloaded, then

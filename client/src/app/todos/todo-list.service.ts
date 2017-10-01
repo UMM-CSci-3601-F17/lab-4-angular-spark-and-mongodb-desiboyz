@@ -28,9 +28,7 @@ export class TodoListService {
         const body1 = {owner:owner, body:body, category:category};
         console.log(body1);
 
-        //Send post request to add a new user with the user data as the body with specified headers.
+        //Send post request to add a new todo with the todo data as the body with the specified headers.
         return this.http.post(this.todoUrl + "/new", body1).map(res => res.json());
     }
-
-
 }
