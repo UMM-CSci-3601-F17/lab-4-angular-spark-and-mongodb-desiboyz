@@ -1,0 +1,38 @@
+
+Add a new Todo:
+<span class="row">
+    <span id="addTodo" class="col-lg-5">
+        <span class="input-group">
+            <input class="form-control" #input type="text" placeholder="Owner" [(ngModel)]="newTodoOwner">
+            <input class="form-control" #input type="text" placeholder="Company" [(ngModel)]="newTodoBody">
+            <input class="form-control" #input type="text" placeholder="Email" [(ngModel)]="newTodoCategory">
+
+            <button class="form-control" #input type="button" (click)="this.addNewTodo(newTodoOwner, newTodoBody, newTodoCategory)">Add Todo</button>
+        </span>
+    </span>
+</span>
+
+<!-- The names userName and userAge, different from searchName and searchAge, are being
+used here only to illustrate that these inputs are not necessarily explicitly referencable from within
+the typescript. Unless made to do so by defining a userName variable within this component's typescript file-->
+<span id="title" class="list-group-item list-group-item-info">
+    <span id="list-title"> To do </span>
+    <input id="todoOwner" #input type="text" placeholder="Filter by owner" (input)="todoOwner = $event.target.value">
+    <input id="todoBody" #input type="text" placeholder="Filter by status" (input)="todoBody = $event.target.value">
+     <input id="todoBody" #input type="text" placeholder="Filter by category" (input)="todoCategory = $event.target.value">
+</span>
+
+<ul class="list-group" *ngIf="todos; else todosError">
+    <li id="todos" *ngFor="let todo of this.filterTodos(todoOwner, todoBody, todoCategory)" class="list-group-item">
+        {{ todo.owner }} is {{ todo.body }} years old {{ todo.category }}
+    </li>
+</ul>
+<!-- Maybe this should be a pop-up instead of just a text message? Not sure. -->
+<ng-template #todosError>
+    <p>
+        There was a problem loading the todos. Possibly the server is down or perhaps there are network issues.
+    </p>
+    <p>
+        Please wait a bit and try again or start the server.
+    </p>
+</ng-template>
