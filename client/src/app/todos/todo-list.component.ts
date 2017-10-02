@@ -58,33 +58,33 @@ export class TodoListComponent implements OnInit {
 
         this.filteredTodos = this.todos;
 
-    //Filter by owner
-    if (searchOwner != null) {
-        searchOwner = searchOwner.toLocaleLowerCase();
+        //Filter by owner
+        if (searchOwner != null) {
+            searchOwner = searchOwner.toLocaleLowerCase();
 
-        this.filteredTodos = this.filteredTodos.filter(todo => {
-            return !searchOwner || todo.owner.toLowerCase().indexOf(searchOwner) !== -1;
-        });
-    }
+            this.filteredTodos = this.filteredTodos.filter(todo => {
+                return !searchOwner || todo.owner.toLowerCase().indexOf(searchOwner) !== -1;
+            });
+        }
 
 
-    //Filter by Body
-    if (searchBody != null) {
-        searchBody = searchBody.toLocaleLowerCase();
+        //Filter by Body
+        if (searchBody != null) {
+            searchBody = searchBody.toLocaleLowerCase();
 
-        this.filteredTodos = this.filteredTodos.filter(todo => {
-            return !searchBody || todo.body.toLowerCase().indexOf(searchBody) !== -1;
-        });
-    }
+            this.filteredTodos = this.filteredTodos.filter(todo => {
+                return !searchBody || todo.body.toLowerCase().indexOf(searchBody) !== -1;
+            });
+        }
 
-    //Filter by Category
-    if (searchCategory != null) {
-        searchCategory = searchCategory.toLocaleLowerCase();
+        //Filter by Category
+        if (searchCategory != null) {
+            searchCategory = searchCategory.toLocaleLowerCase();
 
-        this.filteredTodos = this.filteredTodos.filter(todo => {
-            return !searchCategory || todo.category.toLowerCase().indexOf(searchCategory) !== -1;
-        });
-    }
+            this.filteredTodos = this.filteredTodos.filter(todo => {
+                return !searchCategory || todo.category.toLowerCase().indexOf(searchCategory) !== -1;
+            });
+        }
         return this.filteredTodos;
     }
 

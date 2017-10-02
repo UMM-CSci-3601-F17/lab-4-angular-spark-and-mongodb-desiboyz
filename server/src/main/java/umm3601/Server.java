@@ -13,15 +13,14 @@ import static spark.Spark.*;
 import static spark.debug.DebugScreen.enableDebugScreen;
 
 public class Server {
-    private static final String userDatabaseName = "dev";
-    private static final String todoDatabaseName = "devOne";
+    private static final String commonDatabaseName = "dev";
     private static final int serverPort = 4567;
 
     public static void main(String[] args) throws IOException {
 
         MongoClient mongoClient = new MongoClient();
-        MongoDatabase userDatabase = mongoClient.getDatabase(userDatabaseName);
-        MongoDatabase todoDatabase = mongoClient.getDatabase(todoDatabaseName);
+        MongoDatabase userDatabase = mongoClient.getDatabase(commonDatabaseName);
+        MongoDatabase todoDatabase = mongoClient.getDatabase(commonDatabaseName);
 
         UserController userController = new UserController(userDatabase);
         TodoController todoController = new TodoController(todoDatabase);
