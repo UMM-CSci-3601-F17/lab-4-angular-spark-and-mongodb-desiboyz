@@ -16,10 +16,12 @@ export class TodoListComponent implements OnInit {
     private todoAddSuccess : Boolean = false;
 
     public todoOwner : string;
+    public todoStatus: string;
     public todoBody : string;
     public todoCategory : string;
 
     public newTodoOwner:string;
+    public newTodoStatus: string;
     public newTodoBody: string;
     public newTodoCategory: string;
 
@@ -33,15 +35,16 @@ export class TodoListComponent implements OnInit {
 
     }
 
-    addNewTodo(owner: string, body: string, category: string) : void{
+    addNewTodo(owner: string, status: string, body: string, category: string) : void{
 
         //Here we clear all the fields, there's probably a better way
         //of doing this could be with forms or something else
         this.newTodoOwner = null;
+        this.newTodoStatus = null;
         this.newTodoBody = null;
         this.newTodoCategory = null;
 
-        this.todoListService.addNewTodo(owner, body, category).subscribe(
+        this.todoListService.addNewTodo(owner, status, body, category).subscribe(
             succeeded => {
                 this.todoAddSuccess = succeeded;
                 // Once we added a new todo, refresh our todo list.
@@ -54,9 +57,12 @@ export class TodoListComponent implements OnInit {
 
 
 
-    public filterTodos(searchOwner:string, searchBody: string, searchCategory: string): Todo[] {
+
+    public filterTodos(searchOwner:string, searchStatus: string, searchBody: string, searchCategory: string): Todo[] {
 
         this.filteredTodos = this.todos;
+
+
 
         //Filter by owner
         if (searchOwner != null) {
@@ -67,6 +73,14 @@ export class TodoListComponent implements OnInit {
             });
         }
 
+        //Filter by status
+        if (searchStatus != null) {
+            searchStatus = searchStatus.toLocaleLowerCase();
+
+            this.filteredTodos = this.filteredTodos.filter(todo => {
+                return !searchStatus || todo.status.toString().toLowerCase().indexOf(searchStatus) !== -1;
+            });
+        }
 
         //Filter by Body
         if (searchBody != null) {
@@ -101,7 +115,7 @@ export class TodoListComponent implements OnInit {
         this.todoListService.getTodos().subscribe(
             todos => {
                 this.todos = todos;
-                this.filterTodos(this.todoOwner, this.todoBody, this.todoCategory);
+                this.filterTodos(this.todoOwner, this.todoStatus, this.todoBody, this.todoCategory);
             },
             err => {
                 console.log(err);

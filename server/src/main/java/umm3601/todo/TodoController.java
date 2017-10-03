@@ -117,6 +117,11 @@ public class TodoController {
             filterDoc = filterDoc.append("owner", targetOwner);
         }
 
+        if (queryParams.containsKey("status")) {
+            String targetStatus = (queryParams.get("status")[0]);
+            filterDoc = filterDoc.append("status", targetStatus);
+        }
+
         if (queryParams.containsKey("body")) {
             String targetBody = (queryParams.get("body")[0]);
             filterDoc = filterDoc.append("body", targetBody);
@@ -148,11 +153,12 @@ public class TodoController {
                     BasicDBObject dbO = (BasicDBObject) o;
 
                     String owner = dbO.getString("owner");
+                    String status = dbO.getString("status");
                     String category = dbO.getString("category");
                     String body = dbO.getString("body");
 
-                    System.err.println("Adding new todo [owner=" + owner +  " body=" + body + " category=" + category + ']');
-                    return addNewTodo(owner, body, category);
+                    System.err.println("Adding new todo [owner=" + owner + "status=" + status + " body=" + body + " category=" + category + ']');
+                    return addNewTodo(owner, status, body, category);
                 } catch (NullPointerException e) {
                     System.err.println("A value was malformed or omitted, new todo request failed.");
                     return false;
@@ -184,10 +190,11 @@ public class TodoController {
      * @param category
      * @return
      */
-    public boolean addNewTodo(String owner, String body, String category) {
+    public boolean addNewTodo(String owner, String status, String body, String category) {
 
         Document newTodo = new Document();
         newTodo.append("owner", owner);
+        newTodo.append("status", status);
         newTodo.append("body", body);
         newTodo.append("category", category);
 
