@@ -43,12 +43,16 @@ the typescript. Unless made to do so by defining a userName variable within this
 </span>
 
 <ul class="list-group" *ngIf="todos; else todosError">
-    <li id="todos" *ngFor="let todo of this.filterTodos(todoOwner, todoStatus, todoBody,todoCategory)" class="list-group-item">
-        Owner:{{ todo.owner }}
-        Status: {{ todo.status }}
-        Body: {{ todo.body }}
-        Category: {{ todo.category}}
-    </li>
+    <div class="card">
+        <li id="todos" *ngFor="let todo of this.filterTodos(todoOwner, todoStatus, todoBody,todoCategory)"
+            class="list-group-item">
+            Owner:{{ todo.owner }}<br>
+            Status: {{ todo.status }}<br>
+            Body: {{ todo.body }}<br>
+            Category: {{ todo.category}}<br>
+        </li>
+    </div>
+    <br>
 </ul>
 <!-- Maybe this should be a pop-up instead of just a text message? Not sure. -->
 <ng-template #todosError>
