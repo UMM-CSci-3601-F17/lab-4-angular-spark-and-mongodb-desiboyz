@@ -193,7 +193,7 @@ public class TodoController {
         AggregateIterable<Document> tempDoc = todoCollection.aggregate(Arrays.asList(Aggregates.group("$category")));
         List<String> newRes = new ArrayList<>();
         for (Document d : tempDoc) {
-            newRes.add(doc.getString("_id"));
+            newRes.add(d.getString("_id"));
         }
         Document categoryDoc = new Document();
         for (String c : newRes) {
@@ -203,7 +203,7 @@ public class TodoController {
         AggregateIterable<Document> ownerDoc = todoCollection.aggregate(Arrays.asList(Aggregates.group("$owner")));
         List<String> resTempDoc = new ArrayList<>();
         for (Document d : ownerDoc) {
-            resTempDoc.add(doc.getString("_id"));
+            resTempDoc.add(d.getString("_id"));
         }
         Document tempOwner = new Document();
         for (String o : resTempDoc) {
