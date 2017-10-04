@@ -178,8 +178,31 @@ public class TodoController {
     }
 
     /**
-     * @parama None
+     * @param owner,status,body,category
+     * @return true
+     */
+    public boolean addNewTodo(String owner, String status, String body, String category) {
+
+        Document newTodo = new Document();
+        newTodo.append("owner", owner);
+        newTodo.append("status", status);
+        newTodo.append("body", body);
+        newTodo.append("category", category);
+
+        try {
+            todoCollection.insertOne(newTodo);
+        } catch (MongoException me) {
+            me.printStackTrace();
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /**
      * @return JSON formatted summary of Todos
+     * @parama None
      */
 
     public String todoSummary() {
@@ -223,25 +246,4 @@ public class TodoController {
     }
 
 
-    /**
-     * @param owner,status,body,category
-     * @return true
-     */
-    public boolean addNewTodo(String owner, String status, String body, String category) {
-
-        Document newTodo = new Document();
-        newTodo.append("owner", owner);
-        newTodo.append("status", status);
-        newTodo.append("body", body);
-        newTodo.append("category", category);
-
-        try {
-            todoCollection.insertOne(newTodo);
-        } catch (MongoException me) {
-            me.printStackTrace();
-            return false;
-        }
-
-        return true;
-    }
 }
