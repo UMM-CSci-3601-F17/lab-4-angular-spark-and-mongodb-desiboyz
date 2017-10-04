@@ -76,6 +76,13 @@ public class Server {
             throw new RuntimeException("A demonstration error");
         });
 
+        // Added api/todoSumamry
+
+        get("api/todoSummary", (req, res) -> {
+            res.type("application/json");
+            return todoController.todoSummary();
+        });
+
         // Called after each request to insert the GZIP header into the response.
         // This causes the response to be compressed _if_ the client specified
         // in their request that they can accept compressed responses.

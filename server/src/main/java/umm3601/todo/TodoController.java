@@ -6,6 +6,7 @@ import com.mongodb.MongoException;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Aggregates;
 import com.mongodb.util.JSON;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -15,8 +16,12 @@ import spark.Response;
 import java.util.Iterator;
 import java.util.Map;
 
-import static com.mongodb.client.model.Filters.eq;
 
+import java.util.*;
+
+import com.mongodb.client.AggregateIterable;
+
+import static com.mongodb.client.model.Filters.eq;
 
 /**
  * Controller that manages requests for info about todos.
@@ -79,9 +84,7 @@ public class TodoController {
      * and `null` if no todo with that ID is found
      */
     public String getTodo(String id) {
-        FindIterable<Document> jsonTodos
-            = todoCollection
-            .find(eq("_id", new ObjectId(id)));
+        FindIterable<Document> jsonTodos = todoCollection.find(eq("_id", new ObjectId(id)));
 
         Iterator<Document> iterator = jsonTodos.iterator();
         if (iterator.hasNext()) {
@@ -175,20 +178,8 @@ public class TodoController {
     }
 
     /**
-     * @param owner
-     * @param status
-     * @param category
-     * @param body
-     * @return success or fail as a boolean
-     */
-
-    /**
-     *
-     * @param owner
-     * @param status
-     * @param body
-     * @param category
-     * @return
+     * @param owner,status,body,category
+     * @return true
      */
     public boolean addNewTodo(String owner, String status, String body, String category) {
 
@@ -200,9 +191,7 @@ public class TodoController {
 
         try {
             todoCollection.insertOne(newTodo);
-        }
-        catch(MongoException me)
-        {
+        } catch (MongoException me) {
             me.printStackTrace();
             return false;
         }
@@ -211,5 +200,50 @@ public class TodoController {
     }
 
 
-}
+    /**
+     * @return JSON formatted summary of Todos
+     * @parama None
+     */
 
+    public String todoSummary() {
+        Document doc = new Document();
+        Document extra = new Document();
+        float summary;
+        extra.append("status", true);
+        summary = todoCollection.count(extra);
+        float p = summary / todoCollection.count();
+        doc.append("percentageTodosComplete", p);
+        AggregateIterable<Document> tempDoc = todoCollection.aggregate(Arrays.asList(Aggregates.group("$category")));
+        List<String> newRes = new ArrayList<>();
+        for (Document d : tempDoc) {
+            newRes.add(d.getString("_id"));
+        }
+        Document categoryDoc = new Document();
+        for (String c : newRes) {
+            categoryDoc.append(c, add("category", c) / todoCollection.count(eq("category", c)));
+        }
+        doc.append("categoriesPercentComplete", categoryDoc);
+        AggregateIterable<Document> ownerDoc = todoCollection.aggregate(Arrays.asList(Aggregates.group("$owner")));
+        List<String> resTempDoc = new ArrayList<>();
+        for (Document d : ownerDoc) {
+            resTempDoc.add(d.getString("_id"));
+        }
+        Document tempOwner = new Document();
+        for (String o : resTempDoc) {
+            tempOwner.append(o, add("owner", o) / todoCollection.count(eq("owner", o)));
+        }
+        doc.append("ownersPercentComplete", tempOwner);
+        return JSON.serialize(doc);
+    }
+
+    // Function that take in field and value and returns count (used by todoSummary)
+
+    private float add(String fields, String val) {
+        Document c = new Document();
+        c.append(fields, val);
+        c.append("status", true);
+        return todoCollection.count(c);
+    }
+
+
+}
