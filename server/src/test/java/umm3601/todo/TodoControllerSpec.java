@@ -276,6 +276,4 @@ public class TodoControllerSpec {
         assertEquals("Category should match", "homework", exampleTodoDoc.get("category"));
     }
 
-
-}
 }
