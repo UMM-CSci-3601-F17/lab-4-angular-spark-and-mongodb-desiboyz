@@ -39,18 +39,10 @@ the typescript. Unless made to do so by defining a userName variable within this
     <input id="todoOwner" #input type="text" placeholder="Filter by owner" (input)="todoOwner = $event.target.value">
     <input id="todoOwner" #input type="text" placeholder="Filter by status" (input)="todoStatus = $event.target.value">
     <input id="todoBody" #input type="text" placeholder="Filter by body" (input)="todoBody = $event.target.value">
-     <input id="todoBody" #input type="text" placeholder="Filter by category" (input)="todoCategory = $event.target.value">
+    <input id="todoBody" #input type="text" placeholder="Filter by category"
+           (input)="todoCategory = $event.target.value">
 </span>
 
-<<<<<<< HEAD
-<ul class="list-group" *ngIf="todos; else todosError"><br>
-       <li id="todos" *ngFor="let todo of this.filterTodos(todoOwner, todoStatus, todoBody,todoCategory)" class="list-group-item"> 
-	       <br>Owner:{{ todo.owner }}<br>
-	       <br>Status: {{ todo.status }}<br>
-	       <br>Body: {{ todo.body }}<br>
-	       <br>Category: {{ todo.category}}<br>
-       </li>
-=======
 <ul class="list-group" *ngIf="todos; else todosError">
     <div class="card">
         <li id="todos" *ngFor="let todo of this.filterTodos(todoOwner, todoStatus, todoBody,todoCategory)"
@@ -62,7 +54,6 @@ the typescript. Unless made to do so by defining a userName variable within this
         </li>
     </div>
     <br>
->>>>>>> 810d21c78ce28a53f6fa9551f26f2c15d3b35505
 </ul>
 <!-- Maybe this should be a pop-up instead of just a text message? Not sure. -->
 <ng-template #todosError>
